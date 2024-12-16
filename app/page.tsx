@@ -5,7 +5,8 @@ import React, { useEffect, useState } from "react";
 
 export default function Home() {
   const [dummyData, setDummyData] = useState<DummyDataType[]>();
-
+  const [category, setCategory] = useState("");
+  const [filterCategory, setFilterCategory] = useState<DummyDataType[]>([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -26,11 +27,28 @@ export default function Home() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (!dummyData) return;
+
+    if (category == "") {
+      setFilterCategory(dummyData as DummyDataType[]);
+    } else {
+      dummyData.filter((item) => item.category === category);
+    }
+  }, [category]);
+
   return (
-    <main className="flex h-[calc(100vh-3rem)] flex-col items-center justify-between p-24">
-      <div className="grid grid-cols-3 gap-4">
+    <main className="flex h-screen flex-col items-center justify-between overflow-auto">
+      {/* <div className="">
         {dummyData?.map((item) => (
-          <div key={item.id} className="border w-full h-full flex flex-col p-4 group rounded-md">
+          <div className="capitalize">{item.category}</div>
+        ))}
+      </div> */}
+      <div className="grid grid-cols-3 gap-4 p-8 mt-10">
+        {dummyData?.map((item) => (
+          <div
+            key={item.id}
+            className="border border-gray-400 w-full h-full flex flex-col p-4 group rounded-md">
             <Image
               src={item.image}
               alt={`image-${item.id}`}
@@ -40,7 +58,7 @@ export default function Home() {
             />
             <div className="p-2 w-full">
               <div className="flex justify-between py-2 text-lg">
-                <p className="line-clamp-1">{item.title}</p>
+                <p className="line-clamp-1 tracking-wide ">{item.title}</p>
                 <Heart />
                 {/* <p className="text-red-600 px-2">{item.rating.count}</p> */}
               </div>

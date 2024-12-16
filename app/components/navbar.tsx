@@ -15,7 +15,7 @@ console.log(user)
           Home
         </p>
         {user?.name ? (
-          <p>{user?.name}</p>
+          <p className="capitalize">{user?.name}</p>
         ) : (
           <p className="cursor-pointer" onClick={() => router.push("/login")}>
             Login
